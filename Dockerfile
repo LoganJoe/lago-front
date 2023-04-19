@@ -13,6 +13,8 @@ FROM nginx:1.23-alpine
 
 WORKDIR /usr/share/nginx/html
 
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
+
 RUN apk add --no-cache bash
 
 COPY --from=build /app/dist .
