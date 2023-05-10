@@ -133,7 +133,7 @@ const Invitation = () => {
   return (
     <Page>
       <Card>
-        <StyledLogo height={24} />
+        <StyledLogo height={36} />
         {(!!error || !data?.invite) && !loading ? (
           <>
             <Title variant="headline">{translate('text_63246f875e2228ab7b63dcf4')}</Title>

@@ -10,6 +10,7 @@ const grey500 = '#8C95A6'
 const grey600 = '#66758F'
 const grey700 = '#19212E'
 const white = '#fff'
+const dark = '#0c0c0d'
 
 export const palette = {
   common: {

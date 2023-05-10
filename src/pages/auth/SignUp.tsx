@@ -111,7 +111,7 @@ const SignUp = () => {
   return (
     <Page>
       <Card>
-        <StyledLogo height={24} />
+        <StyledLogo height={36} />
         <Title variant="headline">{translate('text_620bc4d4269a55014d493f12')}</Title>
         <Subtitle>{translate('text_620bc4d4269a55014d493fc9')}</Subtitle>
 

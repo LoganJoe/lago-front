@@ -2,11 +2,14 @@ import styled from 'styled-components'
 
 import { theme } from '~/styles'
 import { Typography } from '~/components/designSystem'
-import Logo from '~/public/images/logo/lago-logo.svg'
+import Logo from '~/public/images/logo/deemos-dark.png'
+import Background from '~/public/images/backgrounds/auth-background-deemos.jpg'
 
 export const Page = styled.div`
   box-sizing: border-box;
-  background-color: ${theme.palette.grey[100]};
+
+  background-image: url(${Background});
+  background-size: cover;
   min-height: 100vh;
   padding: ${theme.spacing(20)};
 
@@ -15,9 +18,22 @@ export const Page = styled.div`
   }
 `
 
-export const StyledLogo = styled(Logo)`
-  margin-bottom: ${theme.spacing(12)};
-`
+export interface StyledLogoProps {
+  width?: number
+  height?: number
+}
+
+export const StyledLogo = ({ width, height }: StyledLogoProps) => {
+  return (
+    <div
+      style={{
+        marginBottom: theme.spacing(12),
+      }}
+    >
+      <img alt="Logo" src={Logo} width={width} height={height}></img>
+    </div>
+  )
+}
 
 export const Card = styled.div`
   margin: 0 auto;

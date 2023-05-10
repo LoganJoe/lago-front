@@ -139,7 +139,7 @@ const ResetPassword = () => {
   return (
     <Page>
       <Card>
-        <StyledLogo height={24} />
+        <StyledLogo height={36} />
 
         {!!loading && !error ? (
           <>

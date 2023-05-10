@@ -70,7 +70,7 @@ const ForgotPassword = () => {
   return (
     <Page>
       <Card>
-        <StyledLogo height={24} />
+        <StyledLogo height={36} />
         {hasSubmitted ? (
           <>
             <Title variant="headline">{translate('text_642707b0da1753a9bb66728e')}</Title>
