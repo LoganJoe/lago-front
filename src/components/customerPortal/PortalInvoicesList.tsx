@@ -57,8 +57,8 @@ export const PortalInvoicesList = ({ translate }: PortalCustomerInvoicesProps) =
   const hasNoInvoices = !loading && !error && !metadata?.totalCount && !hasSearchTerm
 
   return (
-    <section role="grid" tabIndex={-1}>
-      <PageHeader $isEmpty={hasNoInvoices}>
+    <section role="grid">
+      <PageHeader>
         <Typography variant="subhead" color="grey700">
           {translate('text_6419c64eace749372fc72b37')}
         </Typography>
@@ -168,12 +168,9 @@ const PageHeader = styled.div<{ $isEmpty?: boolean }>`
   display: flex;
   height: ${NAV_HEIGHT}px;
   justify-content: space-between;
-  ${({ $isEmpty }) =>
-    !!$isEmpty &&
-    css`
-      box-shadow: ${theme.shadows[7]};
-      margin-bottom: ${theme.spacing(6)};
-    `};
+
+  box-shadow: ${theme.shadows[7]};
+  margin-bottom: ${theme.spacing(6)};
 `
 
 const HeaderRigthBlock = styled.div`

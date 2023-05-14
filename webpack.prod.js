@@ -66,7 +66,7 @@ const config = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: process.env.APP_ENV === 'production' ? 'Lago' : 'Lago - Cloud',
+      title: process.env.APP_ENV === 'production' ? 'Deemos API Dashboard' : 'Deemos API Dashboard - Cloud',
       template: path.join(__dirname, 'src', 'index.html'),
       favicon:
         process.env.APP_ENV === 'production'

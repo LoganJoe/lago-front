@@ -66,7 +66,7 @@ module.exports = (env) =>
     plugins: [
       new ForkTsCheckerWebpackPlugin(),
       new HtmlWebpackPlugin({
-        title: 'Lago - Local',
+        title: 'Deemos API Dashboard - Local',
         template: path.join(__dirname, 'src', 'index.html'),
         favicon: './src/public/images/favicon-local.svg',
       }),
@@ -85,7 +85,7 @@ module.exports = (env) =>
           port: 443,
         },
       },
-      allowedHosts: ['app.lago.dev'],
+      allowedHosts: ['*'],
     },
     optimization: {
       runtimeChunk: true,

@@ -7,6 +7,7 @@ import { Skeleton, Typography } from '~/components/designSystem'
 import Logo from '~/public/images/logo/lago-logo-grey.svg'
 import { PortalCustomerInfos } from '~/components/customerPortal/PortalCustomerInfos'
 import PortalInvoicesList from '~/components/customerPortal/PortalInvoicesList'
+import PortalCustomerUsage from '~/components/customerPortal/PortalCustomerUsage'
 
 gql`
   query getPortalOrgaInfos {
@@ -56,6 +57,7 @@ const CustomerPortal = ({ translate }: CutsomerPortalProps) => {
 
       <PortalCustomerInfos translate={translate} />
       <PortalInvoicesList translate={translate} />
+      <PortalCustomerUsage translate={translate} />
     </PageWrapper>
   )
 }
