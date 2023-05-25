@@ -17,6 +17,9 @@ module.exports = {
   "project_637b4d9f764dcb190431ad4d": {
     "base": require('./-ready-for-dev---coupons---apply-several-coupons-to-customer__base.json')
   },
+  "project_644b9f169e8c4336fd0ad060": {
+    "base": require('./-ready-for-dev---coupons---coupon-amount-based-on-total-excluding-tax__base.json')
+  },
   "project_632d6831010fafe9382b616d": {
     "base": require('./-ready-for-dev---coupons---create--and-recurring-coupons__base.json')
   },
@@ -53,6 +56,9 @@ module.exports = {
   "project_642d5eac2dc55f7f81e01dd4": {
     "base": require('./-ready-for-dev---plans---create-a-plan-ui-refacto__base.json')
   },
+  "project_643e59213ea23c04674eba8c": {
+    "base": require('./-ready-for-dev---plans---set-a-minimum-spending-on-charges__base.json')
+  },
   "project_634ea0e94c99df2bb59820d9": {
     "base": require('./-ready-for-dev---settings---customers---lago-gocardless-connection__base.json')
   },
@@ -80,6 +86,9 @@ module.exports = {
   "project_62d175018d4659c9a3eec929": {
     "base": require('./-wip---credits---create-prepaid-credits__base.json')
   },
+  "project_64538190cd7aa251ac87781b": {
+    "base": require('./-wip---customer---create-an-one-off-invoice-ex-applied_add-on__base.json')
+  },
   "project_6419c64c72d2468f025ea25d": {
     "base": require('./-wip---customer---customer-portal__base.json'),
     "de": require('./-wip---customer---customer-portal__de.json'),
@@ -100,6 +109,9 @@ module.exports = {
   },
   "project_62f50d2512182c6df6c39e37": {
     "base": require('./-wip---general---fe-environment-infos__base.json')
+  },
+  "project_645bb18f29c95e96f9cd43e9": {
+    "base": require('./-wip---settings---create-tax-rate-object--apply-on-org--cus__base.json')
   },
   "project_63e51e8467659a55d188a68c": {
     "base": require('./-wip---settings---define-preferred-doc-language-generation__base.json')

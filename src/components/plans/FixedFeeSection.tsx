@@ -8,9 +8,9 @@ import { TextInputField, SwitchField, AmountInputField } from '~/components/form
 import { useInternationalization } from '~/hooks/core/useInternationalization'
 import { Button, Chip, Icon, Tooltip, Typography } from '~/components/designSystem'
 import { theme, Card, NAV_HEIGHT } from '~/styles'
-import { FORM_ERRORS_ENUM } from '~/hooks/plans/usePlanForm'
 import { getCurrencySymbol } from '~/core/formats/intlFormatNumber'
 import { CurrencyEnum, PlanInterval } from '~/generated/graphql'
+import { FORM_ERRORS_ENUM } from '~/core/formErrors'
 
 import { PlanFormInput } from './types'
 
@@ -47,14 +47,14 @@ const mapIntervalCopy = (interval: string) => {
 export const FixedFeeSection = memo(
   ({ canBeEdited, errorCode, formikProps, isEdition }: FixedFeeSectionProps) => {
     const { translate } = useInternationalization()
-    const [shouldDisplayTrialPeriod, setShouldDisplayTrialPeriod] = useState(
-      !!formikProps.initialValues.trialPeriod
-    )
+    const [shouldDisplayTrialPeriod, setShouldDisplayTrialPeriod] = useState(false)
     const hasErrorInSection =
       Boolean(formikProps.errors.amountCents) || formikProps.errors.amountCents === ''
 
     useEffect(() => {
-      setShouldDisplayTrialPeriod(!!formikProps.initialValues.trialPeriod)
+      const initialTrialPeriod = formikProps?.initialValues?.trialPeriod || 0
+
+      setShouldDisplayTrialPeriod(!isNaN(initialTrialPeriod) && initialTrialPeriod > 0)
     }, [formikProps.initialValues.trialPeriod])
 
     useEffect(() => {
@@ -117,8 +117,6 @@ export const FixedFeeSection = memo(
             {shouldDisplayTrialPeriod ? (
               <InlineTrialPeriod>
                 <InputTrialPeriod
-                  // eslint-disable-next-line jsx-a11y/no-autofocus
-                  autoFocus
                   name="trialPeriod"
                   disabled={isEdition && !canBeEdited}
                   label={translate('text_624453d52e945301380e49c2')}
@@ -136,10 +134,12 @@ export const FixedFeeSection = memo(
                 <CloseTrialPeriodTooltip
                   placement="top-end"
                   title={translate('text_63aa085d28b8510cd46443ff')}
+                  disableHoverListener={isEdition && !canBeEdited}
                 >
                   <Button
                     icon="trash"
                     variant="quaternary"
+                    disabled={isEdition && !canBeEdited}
                     onClick={() => {
                       formikProps.setFieldValue('trialPeriod', null)
                       setShouldDisplayTrialPeriod(false)

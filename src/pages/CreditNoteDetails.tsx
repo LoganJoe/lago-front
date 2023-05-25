@@ -55,10 +55,12 @@ gql`
       id
       balanceAmountCents
       canBeVoided
+      couponsAdjustmentAmountCents
       createdAt
       creditAmountCents
       creditAmountCurrency
       creditStatus
+      currency
       number
       refundAmountCents
       refundedAt
@@ -90,6 +92,9 @@ gql`
           units
           feeType
           itemName
+          trueUpParentFee {
+            id
+          }
           charge {
             id
             billableMetric {
@@ -524,6 +529,8 @@ const CreditNoteDetails = () => {
                             : 0
 
                           return charge.map((item, k) => {
+                            const isTrueUp = !!item?.fee?.trueUpParentFee?.id
+
                             return (
                               <React.Fragment key={`groupSubscriptionItem-${i}-list-item-${k}`}>
                                 {groupDimension !== 0 && k === 0 && (
@@ -539,16 +546,22 @@ const CreditNoteDetails = () => {
                                   </tr>
                                 )}
                                 <tr key={`groupSubscriptionItem-${i}-charge-${j}-item-${k}`}>
-                                  <TD $pad={groupDimension > 0}>
+                                  <TD $pad={groupDimension > 0 && !isTrueUp}>
                                     <Typography variant="body" color="grey700">
-                                      {groupDimension === 0 ? (
+                                      {groupDimension === 0 || !!isTrueUp ? (
                                         <>
                                           {item?.fee?.feeType === FeeTypesEnum.AddOn
-                                            ? translate('text_6388baa2e514213fed583611', {
-                                                name: item?.fee?.itemName,
-                                              })
-                                            : item?.fee?.charge?.billableMetric.name ||
-                                              invoiceDisplayName}
+                                            ? item?.fee?.itemName
+                                            : `${
+                                                item?.fee?.charge?.billableMetric.name ||
+                                                invoiceDisplayName
+                                              }${
+                                                item?.fee?.trueUpParentFee?.id
+                                                  ? ` - ${translate(
+                                                      'text_64463aaa34904c00a23be4f7'
+                                                    )}`
+                                                  : ''
+                                              }`}
                                         </>
                                       ) : (
                                         <>
@@ -562,6 +575,7 @@ const CreditNoteDetails = () => {
                                   </TD>
                                   <td>
                                     <Typography variant="body" color="success600">
+                                      -
                                       {intlFormatNumber(
                                         deserializeAmount(
                                           item.amountCents || 0,
@@ -587,6 +601,30 @@ const CreditNoteDetails = () => {
               {!loading && (
                 <table>
                   <tfoot>
+                    {Number(creditNote?.couponsAdjustmentAmountCents || 0) > 0 && (
+                      <tr>
+                        <td></td>
+                        <td>
+                          <Typography variant="bodyHl" color="grey600">
+                            {translate('text_644b9f17623605a945cafdbb')}
+                          </Typography>
+                        </td>
+                        <td>
+                          <Typography variant="body" color="grey700">
+                            {intlFormatNumber(
+                              deserializeAmount(
+                                creditNote?.couponsAdjustmentAmountCents || 0,
+                                creditNote?.currency || CurrencyEnum.Usd
+                              ),
+                              {
+                                currencyDisplay: 'symbol',
+                                currency: creditNote?.currency || CurrencyEnum.Usd,
+                              }
+                            )}
+                          </Typography>
+                        </td>
+                      </tr>
+                    )}
                     <tr>
                       <td></td>
                       <td>
@@ -596,6 +634,7 @@ const CreditNoteDetails = () => {
                       </td>
                       <td>
                         <Typography variant="body" color="success600">
+                          -
                           {intlFormatNumber(
                             deserializeAmount(
                               creditNote?.subTotalVatExcludedAmountCents || 0,
@@ -619,6 +658,7 @@ const CreditNoteDetails = () => {
                       </td>
                       <td>
                         <Typography variant="body" color="success600">
+                          -
                           {intlFormatNumber(
                             deserializeAmount(
                               creditNote?.vatAmountCents || 0,
@@ -642,6 +682,7 @@ const CreditNoteDetails = () => {
                         </td>
                         <td>
                           <Typography variant="body" color="success600">
+                            -
                             {intlFormatNumber(
                               deserializeAmount(
                                 creditNote?.creditAmountCents || 0,
@@ -666,6 +707,7 @@ const CreditNoteDetails = () => {
                         </td>
                         <td>
                           <Typography variant="body" color="success600">
+                            -
                             {intlFormatNumber(
                               deserializeAmount(
                                 creditNote?.refundAmountCents || 0,
@@ -689,6 +731,7 @@ const CreditNoteDetails = () => {
                       </td>
                       <td>
                         <Typography variant="body" color="success600">
+                          -
                           {intlFormatNumber(
                             deserializeAmount(
                               creditNote?.totalAmountCents || 0,

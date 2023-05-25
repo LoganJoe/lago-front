@@ -4,7 +4,7 @@ import { useFormik } from 'formik'
 import { object, string, number } from 'yup'
 import styled from 'styled-components'
 
-import { useCreateEditAddOn, FORM_ERRORS_ENUM } from '~/hooks/useCreateEditAddOn'
+import { useCreateEditAddOn } from '~/hooks/useCreateEditAddOn'
 import { PageHeader } from '~/styles'
 import { useInternationalization } from '~/hooks/core/useInternationalization'
 import { WarningDialog, WarningDialogRef } from '~/components/WarningDialog'
@@ -25,6 +25,7 @@ import {
   LineAmount,
 } from '~/styles/mainObjectsForm'
 import { deserializeAmount } from '~/core/serializers/serializeAmount'
+import { FORM_ERRORS_ENUM } from '~/core/formErrors'
 
 import { AddOnCodeSnippet } from '../components/addOns/AddOnCodeSnippet'
 
@@ -38,7 +39,6 @@ const CreateAddOn = () => {
       name: addOn?.name || '',
       code: addOn?.code || '',
       description: addOn?.description || '',
-      // @ts-ignore
       amountCents: addOn?.amountCents
         ? String(deserializeAmount(addOn?.amountCents, addOn?.amountCurrency))
         : addOn?.amountCents || undefined,
@@ -150,7 +150,7 @@ const CreateAddOn = () => {
                     />
                     <TextInputField
                       name="code"
-                      disabled={isEdition && !!addOn?.appliedAddOnsCount}
+                      disabled={isEdition}
                       beforeChangeFormatter="code"
                       label={translate('text_629728388c4d2300e2d380b7')}
                       placeholder={translate('text_629728388c4d2300e2d380d9')}
@@ -175,7 +175,7 @@ const CreateAddOn = () => {
                   <LineAmount>
                     <AmountInputField
                       name="amountCents"
-                      disabled={isEdition && !!addOn?.appliedAddOnsCount}
+                      disabled={isEdition}
                       currency={formikProps.values.amountCurrency || CurrencyEnum.Usd}
                       beforeChangeFormatter={['positiveNumber']}
                       label={translate('text_629728388c4d2300e2d3812d')}
@@ -183,7 +183,7 @@ const CreateAddOn = () => {
                     />
                     <ComboBoxField
                       name="amountCurrency"
-                      disabled={isEdition && !!addOn?.appliedAddOnsCount}
+                      disabled={isEdition}
                       data={Object.values(CurrencyEnum).map((currencyType) => ({
                         value: currencyType,
                       }))}
@@ -210,7 +210,7 @@ const CreateAddOn = () => {
           </div>
         </Main>
         <Side>
-          <AddOnCodeSnippet loading={loading} addOn={formikProps.values} />
+          <AddOnCodeSnippet isEdition={isEdition} loading={loading} addOn={formikProps.values} />
         </Side>
       </Content>
 

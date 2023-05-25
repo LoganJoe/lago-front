@@ -119,7 +119,14 @@ export const ChargesSection = memo(
     ] = useGetFilteredBillableMetricsLazyQuery({
       fetchPolicy: 'network-only',
       nextFetchPolicy: 'network-only',
-      variables: { limit: 50 },
+      variables: {
+        limit: 50,
+        aggregationTypes: [
+          AggregationTypeEnum.CountAgg,
+          AggregationTypeEnum.SumAgg,
+          AggregationTypeEnum.UniqueCountAgg,
+        ],
+      },
     })
 
     const billableMetrics = useMemo(() => {
@@ -287,7 +294,7 @@ export const ChargesSection = memo(
           {!!hasAnyNormalCharge && (
             <Charges>
               {formikProps.values.charges.map((charge, i) => {
-                if (charge.instant) return null
+                if (charge.payInAdvance) return null
 
                 const id = getNewChargeId(charge.billableMetric.id, i)
                 const isNew = !existingCharges?.find(
@@ -302,6 +309,7 @@ export const ChargesSection = memo(
                     key={id}
                     shouldDisplayAlreadyUsedChargeAlert={shouldDisplayAlreadyUsedChargeAlert}
                     removeChargeWarningDialogRef={removeChargeWarningDialogRef}
+                    premiumWarningDialogRef={premiumWarningDialogRef}
                     isUsedInSubscription={!isNew && !canBeEdited}
                     currency={formikProps.values.amountCurrency || CurrencyEnum.Usd}
                     index={i}
@@ -332,7 +340,7 @@ export const ChargesSection = memo(
                   formikProps.setFieldValue('charges', [
                     ...previousCharges,
                     {
-                      instant: false,
+                      payInAdvance: false,
                       billableMetric: localBillableMetrics,
                       properties: !localBillableMetrics?.flatGroups?.length
                         ? getPropertyShape({})
@@ -421,7 +429,7 @@ export const ChargesSection = memo(
           {!!hasAnyInstantCharge && (
             <Charges>
               {formikProps.values.charges.map((charge, i) => {
-                if (!charge.instant) return null
+                if (!charge.payInAdvance) return null
 
                 const id = getNewChargeId(charge.billableMetric.id, i)
                 const isNew = !existingCharges?.find(
@@ -436,6 +444,7 @@ export const ChargesSection = memo(
                     key={id}
                     shouldDisplayAlreadyUsedChargeAlert={shouldDisplayAlreadyUsedChargeAlert}
                     removeChargeWarningDialogRef={removeChargeWarningDialogRef}
+                    premiumWarningDialogRef={premiumWarningDialogRef}
                     isUsedInSubscription={!isNew && !canBeEdited}
                     currency={formikProps.values.amountCurrency || CurrencyEnum.Usd}
                     index={i}
@@ -451,17 +460,7 @@ export const ChargesSection = memo(
               <ComboBox
                 name={SEARCH_INSTANT_CHARGE_INPUT_NAME}
                 data={filteredBillableMetrics}
-                searchQuery={() =>
-                  getFilteredBillableMetrics({
-                    variables: {
-                      aggregationTypes: [
-                        AggregationTypeEnum.CountAgg,
-                        AggregationTypeEnum.SumAgg,
-                        AggregationTypeEnum.UniqueCountAgg,
-                      ],
-                    },
-                  })
-                }
+                searchQuery={getFilteredBillableMetrics}
                 loading={filteredBillableMetricsLoading}
                 placeholder={translate('text_6435888d7cc86500646d8981')}
                 emptyText={translate('text_6246b6bc6b25f500b779aa7a')}
@@ -476,7 +475,7 @@ export const ChargesSection = memo(
                   formikProps.setFieldValue('charges', [
                     ...previousCharges,
                     {
-                      instant: true,
+                      payInAdvance: true,
                       billableMetric: localBillableMetrics,
                       properties: !localBillableMetrics?.flatGroups?.length
                         ? getPropertyShape({})

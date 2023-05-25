@@ -231,7 +231,24 @@ sources:
       fileName: 👍 [Ready for dev] - Login - Reset password
     - name: 👍 [Ready for dev] - Plans - Create a plan UI refacto
       id: 642d5eac2dc55f7f81e01dd4
+      fileName: 👍 [Ready for dev] - Plans - Create a plan UI refacto
     - name: ⚙️ [WIP] - Coupons - Coupon limited to a billable metric
       id: 643526532896c737f8b18e8f
+      fileName: ⚙️ [WIP] - Coupons - Coupon limited to a billable metric
+    - name: 👍 [Ready for dev] - Plans - Set a minimum spending on charges
+      id: 643e59213ea23c04674eba8c
+      fileName: 👍 [Ready for dev] - Plans - Set a minimum spending on charges
+    - name: >-
+        👍 [Ready for dev] - Coupons - Coupon amount based on total excluding
+        tax
+      id: 644b9f169e8c4336fd0ad060
+      fileName: >-
+        👍 [Ready for dev] - Coupons - Coupon amount based on total excluding
+        tax
+    - name: ⚙️ [WIP] - Customer - Create an one off invoice (ex-applied_add-on)
+      id: 64538190cd7aa251ac87781b
+      fileName: ⚙️ [WIP] - Customer - Create an one off invoice (ex-applied_add-on)
+    - name: ⚙️ [WIP] - Settings - Create tax rate object & apply on org & cus
+      id: 645bb18f29c95e96f9cd43e9
 format: flat
 variants: true

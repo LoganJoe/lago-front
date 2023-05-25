@@ -19,11 +19,15 @@ const CreateBillableMetric = lazy(
   () => import(/* webpackChunkName: 'create-billable-metrics' */ '~/pages/CreateBillableMetric')
 )
 const CreatePlan = lazy(() => import(/* webpackChunkName: 'create-plan' */ '~/pages/CreatePlan'))
+const CreateTax = lazy(() => import(/* webpackChunkName: 'create-tax' */ '~/pages/CreateTax'))
+const CreateInvoice = lazy(
+  () => import(/* webpackChunkName: 'create-plan' */ '~/pages/CreateInvoice')
+)
 const CreateCoupon = lazy(
   () => import(/* webpackChunkName: 'create-coupon' */ '~/pages/CreateCoupon')
 )
 const CreateAddOn = lazy(
-  () => import(/* webpackChunkName: 'create-coupon' */ '~/pages/CreateAddOn')
+  () => import(/* webpackChunkName: 'create-add-on' */ '~/pages/CreateAddOn')
 )
 
 // ----------- Routes -----------
@@ -48,6 +52,11 @@ export const UPDATE_COUPON_ROUTE = '/update/coupons/:id'
 
 export const CREATE_ADD_ON_ROUTE = '/create/add-on'
 export const UPDATE_ADD_ON_ROUTE = '/update/add-on/:id'
+
+export const CREATE_TAX_RATE_ROUTE = '/create/tax'
+export const UPDATE_TAX_RATE_ROUTE = '/update/tax/:id'
+
+export const CREATE_INVOICE_ROUTE = '/customer/:id/create-invoice'
 
 export const objectListRoutes: CustomRouteObject[] = [
   {
@@ -97,5 +106,15 @@ export const objectCreationRoutes: CustomRouteObject[] = [
     path: [CREATE_PLAN_ROUTE, UPDATE_PLAN_ROUTE],
     private: true,
     element: <CreatePlan />,
+  },
+  {
+    path: [CREATE_TAX_RATE_ROUTE, UPDATE_TAX_RATE_ROUTE],
+    private: true,
+    element: <CreateTax />,
+  },
+  {
+    path: [CREATE_INVOICE_ROUTE],
+    private: true,
+    element: <CreateInvoice />,
   },
 ]

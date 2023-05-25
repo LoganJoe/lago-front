@@ -47,7 +47,8 @@ const serializeProperties = (properties: Properties, chargeModel: ChargeModelEnu
       ? {
           amount: undefined,
           freeUnitsPerEvents: Number(properties?.freeUnitsPerEvents) || undefined,
-          fixedAmount: !!properties?.fixedAmount ? String(properties?.fixedAmount) : undefined,
+          fixedAmount:
+            Number(properties?.fixedAmount || 0) > 0 ? String(properties?.fixedAmount) : undefined,
           freeUnitsPerTotalAggregation: !!properties?.freeUnitsPerTotalAggregation
             ? String(properties?.freeUnitsPerTotalAggregation)
             : undefined,
@@ -63,10 +64,11 @@ export const serializePlanInput = (values: PlanFormInput) => {
     amountCents: Number(serializeAmount(amountCents, values.amountCurrency)),
     trialPeriod: Number(trialPeriod || 0),
     charges: charges.map(
-      ({ billableMetric, chargeModel, properties, groupProperties, ...charge }) => {
+      ({ billableMetric, chargeModel, properties, groupProperties, minAmountCents, ...charge }) => {
         return {
           chargeModel,
           billableMetricId: billableMetric.id,
+          minAmountCents: Number(serializeAmount(minAmountCents, values.amountCurrency) || 0),
           properties: properties
             ? {
                 ...serializeProperties(properties as Properties, chargeModel),

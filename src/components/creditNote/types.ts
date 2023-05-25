@@ -7,6 +7,7 @@ export type FromFee = {
   name: string
   value: string | number
   vatRate: number
+  isTrueUpFee?: boolean
 }
 
 export type GroupedFee = {
@@ -37,7 +38,7 @@ export interface CreditNoteForm {
   payBack: { type?: CreditTypeEnum; value?: number }[]
   description?: string
   fees?: FeesPerInvoice
-  addOnFee?: FromFee
+  addOnFee?: FromFee[]
 }
 
 export enum CreditNoteFeeErrorEnum {

@@ -15,10 +15,7 @@ import {
 import { ERROR_404_ROUTE, ADD_ONS_ROUTE } from '~/core/router'
 import { addToast, hasDefinedGQLError } from '~/core/apolloClient'
 import { serializeAmount } from '~/core/serializers/serializeAmount'
-
-export enum FORM_ERRORS_ENUM {
-  existingCode = 'existingCode',
-}
+import { FORM_ERRORS_ENUM } from '~/core/formErrors'
 
 gql`
   fragment EditAddOn on AddOn {
@@ -28,7 +25,6 @@ gql`
     description
     amountCents
     amountCurrency
-    appliedAddOnsCount
   }
 
   query getSingleAddOn($id: ID!) {
@@ -75,7 +71,6 @@ export const useCreateEditAddOn: () => UseCreateEditAddOnReturn = () => {
   const { id } = useParams()
   const { data, loading, error } = useGetSingleAddOnQuery({
     context: { silentError: LagoApiError.NotFound },
-    // @ts-ignore
     variables: { id: id as string },
     skip: !id,
   })

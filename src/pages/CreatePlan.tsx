@@ -17,7 +17,7 @@ import { WarningDialog, WarningDialogRef } from '~/components/WarningDialog'
 import { Typography, Button, Skeleton } from '~/components/designSystem'
 import { theme, PageHeader, Card } from '~/styles'
 import { PlanCodeSnippet } from '~/components/plans/PlanCodeSnippet'
-import { usePlanForm, PLAN_FORM_TYPE_ENUM, FORM_ERRORS_ENUM } from '~/hooks/plans/usePlanForm'
+import { usePlanForm, PLAN_FORM_TYPE_ENUM } from '~/hooks/plans/usePlanForm'
 import { chargeSchema } from '~/formValidation/chargeSchema'
 import {
   Main,
@@ -32,6 +32,7 @@ import { deserializeAmount } from '~/core/serializers/serializeAmount'
 import { PlanSettingsSection } from '~/components/plans/PlanSettingsSection'
 import { FixedFeeSection } from '~/components/plans/FixedFeeSection'
 import { ChargesSection } from '~/components/plans/ChargesSection'
+import { FORM_ERRORS_ENUM } from '~/core/formErrors'
 
 import { PlanFormInput, LocalChargeInput } from '../components/plans/types'
 
@@ -62,6 +63,7 @@ gql`
     billChargesMonthly
     charges {
       id
+      minAmountCents
       billableMetric {
         id
         code
@@ -111,7 +113,6 @@ const CreatePlan = () => {
       description: plan?.description || '',
       interval: plan?.interval || PlanInterval.Monthly,
       payInAdvance: plan?.payInAdvance || false,
-      // @ts-ignore
       amountCents: isNaN(plan?.amountCents)
         ? undefined
         : String(
@@ -125,9 +126,13 @@ const CreatePlan = () => {
             : undefined
           : plan?.trialPeriod,
       billChargesMonthly: plan?.billChargesMonthly || undefined,
-      // @ts-ignore
       charges: plan?.charges
-        ? plan?.charges.map(({ properties, groupProperties, ...charge }) => ({
+        ? plan?.charges.map(({ properties, groupProperties, minAmountCents, ...charge }) => ({
+            minAmountCents: isNaN(minAmountCents)
+              ? undefined
+              : String(
+                  deserializeAmount(minAmountCents || 0, plan.amountCurrency || CurrencyEnum.Usd)
+                ),
             properties:
               properties && !charge.billableMetric.flatGroups?.length
                 ? getPropertyShape(properties)
@@ -160,8 +165,8 @@ const CreatePlan = () => {
   })
 
   const canBeEdited = !plan?.subscriptionsCount
-  const hasAnyNormalCharge = formikProps.values.charges.some((c) => !c.instant)
-  const hasAnyInstantCharge = formikProps.values.charges.some((c) => !!c.instant)
+  const hasAnyNormalCharge = formikProps.values.charges.some((c) => !c.payInAdvance)
+  const hasAnyInstantCharge = formikProps.values.charges.some((c) => !!c.payInAdvance)
 
   useEffect(() => {
     if (errorCode === FORM_ERRORS_ENUM.existingCode) {
