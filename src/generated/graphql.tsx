@@ -4452,8 +4452,15 @@ export type EventsQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']>;
 }>;
 
+export type PortalEventsQueryVariables = Exact<{
+  page?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+}>;
+
 
 export type EventsQuery = { __typename?: 'Query', events?: { __typename?: 'EventCollection', collection: Array<{ __typename?: 'Event', id: string, code: string, externalCustomerId: string, transactionId?: string | null, timestamp?: any | null, receivedAt: any, payload: any, billableMetricName?: string | null, matchBillableMetric: boolean, matchCustomField: boolean, apiClient?: string | null, ipAddress?: string | null, externalSubscriptionId: string, customerTimezone: TimezoneEnum }>, metadata: { __typename?: 'CollectionMetadata', currentPage: number, totalPages: number } } | null };
+
+export type PortalEventsQuery = { __typename?: 'Query', customerPortalEvents?: { __typename?: 'EventCollection', collection: Array<{ __typename?: 'Event', id: string, code: string, externalCustomerId: string, transactionId?: string | null, timestamp?: any | null, receivedAt: any, payload: any, billableMetricName?: string | null, matchBillableMetric: boolean, matchCustomField: boolean, apiClient?: string | null, ipAddress?: string | null, externalSubscriptionId: string, customerTimezone: TimezoneEnum }>, metadata: { __typename?: 'CollectionMetadata', currentPage: number, totalPages: number } } | null };
 
 export type GetWehbookSettingQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -10206,6 +10213,19 @@ export const EventsDocument = gql`
   }
 }
     ${EventListFragmentDoc}`;
+export const PortalEventsDocument = gql`
+    query customerPortalEvents($page: Int, $limit: Int) {
+  customerPortalEvents(page: $page, limit: $limit) {
+    collection {
+      ...EventList
+    }
+    metadata {
+      currentPage
+      totalPages
+    }
+  }
+}
+    ${EventListFragmentDoc}`;
 
 /**
  * __useEventsQuery__
@@ -10243,6 +10263,37 @@ export const GetWehbookSettingDocument = gql`
   }
 }
     `;
+
+/**
+ * __usePortalEventsQuery__
+ *
+ * To run a query within a React component, call `usePortalEventsQuery` and pass it any options that fit your needs.
+ * When your component renders, `usecustomerPortalEventsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePortalEventsQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function usePortalEventsQuery(baseOptions?: Apollo.QueryHookOptions<PortalEventsQuery, PortalEventsQueryVariables>) {
+  const options = {...defaultOptions, ...baseOptions}
+  return Apollo.useQuery<PortalEventsQuery, PortalEventsQueryVariables>(PortalEventsDocument, options);
+}
+
+
+export function usePortalEventsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PortalEventsQuery, PortalEventsQueryVariables>) {
+    const options = {...defaultOptions, ...baseOptions}
+    return Apollo.useLazyQuery<PortalEventsQuery, PortalEventsQueryVariables>(PortalEventsDocument, options);
+  }
+export type PortalEventsQueryHookResult = ReturnType<typeof usePortalEventsQuery>;
+export type PortalEventsLazyQueryHookResult = ReturnType<typeof usePortalEventsLazyQuery>;
+export type PortalEventsQueryResult = Apollo.QueryResult<PortalEventsQuery, PortalEventsQueryVariables>;
 
 /**
  * __useGetWehbookSettingQuery__
