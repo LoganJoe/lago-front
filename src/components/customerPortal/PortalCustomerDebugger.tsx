@@ -67,7 +67,6 @@ const PortalCustomerDebugger = ({ translate }: PortalCustomerDebuggerProps) => {
     variables: { limit: 20 },
     notifyOnNetworkStatusChange: true,
   })
-  console.log('data',data)
   const { onKeyDown } = useListKeysNavigation({
     getElmId: (i) => `event-item-${i}`,
     navigate: (id) => {
