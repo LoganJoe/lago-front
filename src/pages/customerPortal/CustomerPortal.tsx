@@ -48,12 +48,7 @@ const CustomerPortal = ({ translate }: CutsomerPortalProps) => {
             <Typography variant="headline">{data?.customerPortalOrganization?.name}</Typography>
           </InlineItems>
         )}
-        <InlineItems>
-          <InlinePoweredByTypography variant="noteHl" color="grey500">
-            {translate('text_6419c64eace749372fc72b03')}
-          </InlinePoweredByTypography>
-          <StyledLogo />
-        </InlineItems>
+        
       </PageHeader>
 
       <PortalCustomerInfos translate={translate} />
