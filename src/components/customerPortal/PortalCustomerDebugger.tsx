@@ -63,11 +63,11 @@ interface PortalCustomerDebuggerProps {
 const PortalCustomerDebugger = ({ translate }: PortalCustomerDebuggerProps) => {
   const [selectedEventId, setSelectedEventId] = useState<string | undefined>(undefined)
   const [refetchLoading, setRefetchLoading] = useState<boolean>(false)
+  let checkcore:string=''
   const { data, error, loading, refetch, fetchMore } = usePortalEventsQuery({
     variables: { limit: 20 },
     notifyOnNetworkStatusChange: true,
   })
-  console.log('data',data)
   const { onKeyDown } = useListKeysNavigation({
     getElmId: (i) => `event-item-${i}`,
     navigate: (id) => {
@@ -141,8 +141,12 @@ const PortalCustomerDebugger = ({ translate }: PortalCustomerDebuggerProps) => {
                                 <DateHeader>{eventDate}</DateHeader>
                                 {groupedEvent[eventDate].map((event) => {
                                     
-                                    const { id } = event
-                                    index += 1
+                                    if(event.id===checkcore){
+                                      return;
+                                   }
+                                   const { id } = event
+                                   index += 1
+                                   checkcore=event.id
 
                                     return (
                                     <div key={id}>
