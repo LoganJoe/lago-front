@@ -63,7 +63,8 @@ interface PortalCustomerDebuggerProps {
 const PortalCustomerDebugger = ({ translate }: PortalCustomerDebuggerProps) => {
   const [selectedEventId, setSelectedEventId] = useState<string | undefined>(undefined)
   const [refetchLoading, setRefetchLoading] = useState<boolean>(false)
-  let checkcore:string=''
+  let checkcore:string[]=['']
+  const [page, setPage] = useState<number>(1)
   const { data, error, loading, refetch, fetchMore } = usePortalEventsQuery({
     variables: { limit: 20 },
     notifyOnNetworkStatusChange: true,
@@ -125,11 +126,11 @@ const PortalCustomerDebugger = ({ translate }: PortalCustomerDebuggerProps) => {
                         onBottom={() => {
                         const { currentPage = 0, totalPages = 0 } = data?.customerPortalEvents?.metadata || {}
 
-                        currentPage < totalPages &&
-                            !loading &&
-                            fetchMore({
-                            variables: { page: currentPage + 1 },
-                            })
+                        // currentPage < totalPages &&
+                        //     !loading &&
+                        //     fetchMore({
+                        //     variables: { page: currentPage + 1 },
+                        //     })
                         }}
                     >
                         <ListContent>
@@ -141,12 +142,12 @@ const PortalCustomerDebugger = ({ translate }: PortalCustomerDebuggerProps) => {
                                 <DateHeader>{eventDate}</DateHeader>
                                 {groupedEvent[eventDate].map((event) => {
                                     
-                                    if(event.id===checkcore){
+                                    if(event.id === checkcore.filter(f=>f===event.id)[0]){
                                       return;
                                    }
                                    const { id } = event
                                    index += 1
-                                   checkcore=event.id
+                                   checkcore.push(event.id)
 
                                     return (
                                     <div key={id}>
@@ -180,6 +181,16 @@ const PortalCustomerDebugger = ({ translate }: PortalCustomerDebuggerProps) => {
                             <EventItemSkeleton key={`event-skeleton-item-${i}`} />
                             ))}
                         </ListContent>
+                        <PageDiv><Button disabled={page===1?true:false} onClick={()=>{
+                          setPage(page-1)
+                          setSelectedEventId(undefined)
+                          refetch({page:page-1})
+                          }}>上一页</Button>
+                        <Button disabled={page===data?.customerPortalEvents?.metadata.totalPages?true:false} onClick={()=>{
+                          setPage(page+1)
+                          setSelectedEventId(undefined)
+                          refetch({page:page+1})
+                          }}>下一页</Button></PageDiv>
                     </InfiniteScroll>
                     </>
                 </EventList>
@@ -235,7 +246,11 @@ const DebuggerContainer = styled.section`
     flex-direction: column;
   }
 `
-
+const PageDiv=styled.section`
+  width:100%;
+  display:flex;
+  justifyContent:space-around;
+`
 
 const EventInfos = styled.div`
   width: 50%;
