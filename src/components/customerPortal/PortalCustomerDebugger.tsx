@@ -181,7 +181,7 @@ const PortalCustomerDebugger = ({ translate }: PortalCustomerDebuggerProps) => {
                             <EventItemSkeleton key={`event-skeleton-item-${i}`} />
                             ))}
                         </ListContent>
-                        <PageDiv><Button disabled={page===1?true:false} onClick={()=>{
+                        <div style={{width:"100%",display:'flex',justifyContent:'space-around'}}><Button disabled={page===1?true:false} onClick={()=>{
                           setPage(page-1)
                           setSelectedEventId(undefined)
                           refetch({page:page-1})
@@ -190,7 +190,7 @@ const PortalCustomerDebugger = ({ translate }: PortalCustomerDebuggerProps) => {
                           setPage(page+1)
                           setSelectedEventId(undefined)
                           refetch({page:page+1})
-                          }}>下一页</Button></PageDiv>
+                          }}>下一页</Button></div>
                     </InfiniteScroll>
                     </>
                 </EventList>
