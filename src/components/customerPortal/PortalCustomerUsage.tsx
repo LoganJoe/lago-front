@@ -8,6 +8,8 @@ import {
   TimezoneEnum,
   StatusTypeEnum,
   useGetCustomerSubscriptionForUsageQuery,
+  usePortalGetCustomerQuery,
+  usePortalGetCustomerSubscriptionForUsageQuery,
 } from '~/generated/graphql'
 import { theme, NAV_HEIGHT } from '~/styles'
 import { Typography } from '~/components/designSystem'
@@ -102,13 +104,12 @@ const CustomerUsageSection = ({
   parentLoading,
   parentError,
 }: CustomerUsageSectionProps) => {
-  const { data, loading, error } = useGetCustomerQuery({
-    variables: { id: customerId as string },
+  const { data, loading, error } = usePortalGetCustomerQuery({
     skip: !customerId,
     notifyOnNetworkStatusChange: true,
   })
 
-  const { applicableTimezone } = data?.customer || {}
+  const { applicableTimezone } = data?.customerPortalUser || {}
   const safeTimezone = applicableTimezone || TimezoneEnum.TzUtc
 
   return (
@@ -162,11 +163,10 @@ export const CustomerUsageContent = ({
   parentLoading,
   parentError,
 }: CustomerUsageContentProps) => {
-  const { data, loading, error } = useGetCustomerSubscriptionForUsageQuery({
-    variables: { id: id as string },
+  const { data, loading, error } = usePortalGetCustomerSubscriptionForUsageQuery({
     skip: !id,
   })
-  const subscriptions = data?.customer?.subscriptions
+  const subscriptions = data?.customerPortalUser?.subscriptions
   const isError = parentError || error
   const isLoading = parentLoading || loading
 

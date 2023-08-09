@@ -13,7 +13,7 @@ import {
 } from '~/generated/graphql'
 import { EventItem, EventItemSkeleton } from '~/components/developers/EventItem'
 import { useListKeysNavigation } from '~/hooks/ui/useListKeyNavigation'
-import { useOrganizationInfos } from '~/hooks/useOrganizationInfos'
+import { usePortalOrganizationInfos } from '~/hooks/usePortalOrganizationInfos'
 import { DebuggerEventDetails } from '~/components/developers/DebuggerEventDetails'
 
 
@@ -78,7 +78,7 @@ const PortalCustomerDebugger = ({ translate }: PortalCustomerDebuggerProps) => {
       element.blur && element.blur()
     },
   })
-  const { formatTimeOrgaTZ } = useOrganizationInfos()
+  const { formatTimeOrgaTZ } = usePortalOrganizationInfos()
   let index = -1
   const groupedEvent = useMemo(
     () =>
@@ -126,11 +126,6 @@ const PortalCustomerDebugger = ({ translate }: PortalCustomerDebuggerProps) => {
                         onBottom={() => {
                         const { currentPage = 0, totalPages = 0 } = data?.customerPortalEvents?.metadata || {}
 
-                        // currentPage < totalPages &&
-                        //     !loading &&
-                        //     fetchMore({
-                        //     variables: { page: currentPage + 1 },
-                        //     })
                         }}
                     >
                         <ListContent>
@@ -185,12 +180,12 @@ const PortalCustomerDebugger = ({ translate }: PortalCustomerDebuggerProps) => {
                           setPage(page-1)
                           setSelectedEventId(undefined)
                           refetch({page:page-1})
-                          }}>上一页</Button>
+                          }}>Prev</Button>
                         <Button disabled={page===data?.customerPortalEvents?.metadata.totalPages?true:false} onClick={()=>{
                           setPage(page+1)
                           setSelectedEventId(undefined)
                           refetch({page:page+1})
-                          }}>下一页</Button></div>
+                          }}>Next</Button></div>
                     </InfiniteScroll>
                     </>
                 </EventList>
